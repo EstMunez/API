@@ -1,0 +1,53 @@
+﻿@page "/Favs"
+
+
+@using APIEstherMM.Services
+@using APIEstherMM.Models
+@inject StockageLocal stockageLocal
+
+
+
+<PageTitle>Favoris</PageTitle>
+
+<h1>Favoris</h1>
+
+<p>Moi c'est Esther</p>
+
+@if (isLoading)
+{
+    <p>Chargement...</p>
+}
+else if (!favorites.Any())
+{
+    <p>Aucun favori enregistré.</p>
+}
+else
+{
+    <ul>
+        @foreach (var item in favorites)
+        {
+            <li>
+                @item.Name
+                <button @onclick="() => RemoveFavorite(item.Id)">❌ Retirer</button>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    
+    private List<DataItem> favorites = new();  // Assurez-vous que DataItem est bien utilisé ici
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        favorites = await stockageLocal.GetFavoritesAsync(); // Correctement appelé en asynchrone
+        isLoading = false;
+    }
+
+    private async Task RemoveFavorite(int id)
+    {
+        await stockageLocal.RemoveFavoriteAsync(id);
+        favorites = await stockageLocal.GetFavoritesAsync(); // Rafraîchissement après suppression
+    }
+}

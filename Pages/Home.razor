@@ -1,0 +1,38 @@
+﻿@using APIEstherMM.Services
+@using APIEstherMM.Models
+@using APIEstherMM.Composants
+
+@inject StockageLocal stockageLocal
+
+@page "/"
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+
+<h3>Liste des Articles</h3>
+
+@if (items == null || !items.Any())
+{
+    <p>Aucun article disponible.</p>
+}
+else
+{
+    <!-- Affichage des items -->
+    @foreach (var item in items)
+    {
+        <ItemCard item="@item" />
+    }
+
+}
+
+@code {
+    private List<DataItem> items = new List<DataItem>
+    {
+        new DataItem { Id = 1, Name = "Article 1", Description = "Description de l'article 1" },
+        new DataItem { Id = 2, Name = "Article 2", Description = "Description de l'article 2" },
+        new DataItem { Id = 3, Name = "Article 3", Description = "Description de l'article 3" }
+    };
+}

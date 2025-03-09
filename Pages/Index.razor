@@ -1,0 +1,36 @@
+﻿@page "/index"
+@using APIEstherMM.Models
+@using APIEstherMM.Services
+@inject HttpClient Http
+
+<PageTitle>index</PageTitle>
+<h1>index</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@inject Apiservice apiservice
+
+<h3>Données de l'API</h3>
+
+@if (items == null)
+{
+    <p>Chargement...</p>
+}
+else
+{
+    <ul>
+        @foreach (var item in items)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<DataItem >? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await apiservice.GetItemsAsync();
+    }
+}
